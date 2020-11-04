@@ -1,19 +1,29 @@
 import cv2
-import numpy as np
 import os
+import math
 
-vid = cv2.VideoCapture('1.mp4')
+task = 1
+while( task <= 23):
+    cap = cv2.VideoCapture("J_Strickland/Task"+ str(task) +".mp4")
+    length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    # print(length)
 
-if not os.path.exists('images'):
-    os.makedirs('images')
+    vid = cv2.VideoCapture('J_Strickland/Task'+ str(task) +'.mp4')
+    if not os.path.exists('J_Strickland/Task'+ str(task)):
+        os.makedirs('images/J_Strickland/Task'+ str(task))
 
-index = 1
-while(index <= 5):
-    ret, frame = vid.read()
-    if not ret: 
-        break
-    name = './images/frame' + str(index) + '.jpg'
-    print ('Creating...' + name)
-    
-    cv2.imwrite(name, frame)
-    index += 1
+    modulo = math.ceil(length/60)
+
+    index = 1
+    count = 0
+    while(True):
+        ret, frame = vid.read()
+        if count % modulo == 0:
+            if not ret:
+                break
+            name = './images/J_Strickland/Task'+ str(task)+'/Task'+ str(task)+'-Frame' + str(index) + '.png'
+            print ('Creating...' + name)
+            cv2.imwrite(name, frame)
+            index += 1
+        count += 1
+    task += 1
